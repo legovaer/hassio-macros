@@ -1,0 +1,33 @@
+{#
+  Transforms a simple text to SSML format.
+
+  No rocket science here, this is just for the lazy people who don't feel like adding "<speak></speak>" tags manually.
+
+  @param string message
+    The message that will get prefixed with "<speak>" and suffixed with "</speak>".
+#}
+{% macro speak(message) %}
+  <speak>{{ message }}</speak>
+{% endmacro %}
+
+{#
+  Pause speech for a given time.
+
+  Controls pausing or other prosodic boundaries between words. Using break() between any pair of tokens is optional. If this element is not present between words, the break is automatically determined based on the linguistic context.
+
+  @param string time
+    Sets the length of the break by seconds or milliseconds (e.g. "3s" or "250ms"). Defaults to '1s'.
+  @param string strength
+    Sets the strength of the output's prosodic break by relative terms. Valid values are: "x-weak", weak", "medium", "strong", and "x-strong". The value "none" indicates that no prosodic break boundary should be outputted, which can be used to prevent a prosodic break that the processor would otherwise produce. The other values indicate monotonically non-decreasing (conceptually increasing) break strength between tokens. The stronger boundaries are typically accompanied by pauses.
+
+  @see https://www.w3.org/TR/speech-synthesis/#S3.2.3
+#}
+{% macro break(time='3s', strength=null) %}
+  {% if time != null and strength != null %}
+    <break time="{{ time }}" strength="{{ strength }}"/>
+  {% elif time != null and strength == null %}
+    <break time="{{ time }}"/>
+  {% elif time == null and strength != null %}
+    <break strength="{{ strength }}"/>
+  {% endif %}
+{% endmacro %}

@@ -1,2 +1,3 @@
-# hassio-macros
-Home Assistant Jinja2 templates
+# hassio-templates
+
+Jinja2 templates that I use within Home Assistant. 
